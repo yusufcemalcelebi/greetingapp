@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Build service
+          command: |
+            set -x
+            bash ./ci/ci-build.sh
+
+      # - deploy:
+      #     name: Push image to ecr
+      #     command: |
+      #       set -x
+      #       bash ./.build/src/ci-push.sh
+
+# workflows:
+#   build-default:
+#     jobs:
+#       - build:
+#           context: global
