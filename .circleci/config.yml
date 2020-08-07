@@ -14,11 +14,11 @@ jobs:
             set -x
             bash ./ci/ci-build.sh
 
-      # - deploy:
-      #     name: Push image to ecr
-      #     command: |
-      #       set -x
-      #       bash ./.build/src/ci-push.sh
+      - deploy:
+          name: Push image to docker hub
+          command: |
+            set -x
+            bash ./ci/ci-push.sh
 
 # workflows:
 #   build-default:
