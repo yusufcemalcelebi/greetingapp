@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  ci-build:
     docker:
       - image: cimg/base:2020.01
     steps:
@@ -20,8 +20,29 @@ jobs:
             set -x
             bash ./ci/ci-push.sh
 
-# workflows:
-#   build-default:
-#     jobs:
-#       - build:
-#           context: global
+  cd-k8s: 
+    docker:
+      - image: cimg/base:2020.01
+
+    steps:
+      - checkout
+
+      - run:
+          name: Deploy app
+          command: |
+            set -x
+            bash ./cd/deploy.sh
+
+
+workflows:
+  ci-cd:
+    jobs:
+      - ci-build
+
+      - cd-approve:
+          type: approval
+          requires:
+            - ci-build
+      - cd-k8s:
+          requires:
+            - cd-approve
